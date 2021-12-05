@@ -13,10 +13,9 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Getter
 @Setter
-public class CzechCraftVote implements Serializable {
+public class CzechCraftVote extends Vote {
 
     private String datetime;
     private boolean delivered;
     private String username;
-
 }

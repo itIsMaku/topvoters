@@ -18,38 +18,41 @@ import java.util.List;
 @Service
 public class TopVotersService {
 
+    public enum VotePage {
+        CZECH_CRAFT,
+        CRAFTLIST;
+    }
+
     private final Gson gson = new GsonBuilder().create();
 
-    /*
-
-        Maybe sometimes when I will have more time I will rewrite this. But now it's not time for that. :P
-        - maku 04.12.2021 20:40
-
-     */
-
-
-    @SneakyThrows
     public List<CzechCraftVote> czechCraftVotes(String serverSlug, int year, int month) {
-        URL url = new URL(String.format("https://czech-craft.eu/api/server/%s/votes/%s/%s/", serverSlug, year, month));
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(url.openStream()));
-        String json = bufferedReader.readLine().trim();
-        JsonParser parser = new JsonParser();
-        JsonElement element = parser.parse(json);
-        JsonObject object = element.getAsJsonObject();
+        JsonObject object = getElement(String.format("https://czech-craft.eu/api/server/%s/votes/%s/%s/", serverSlug, year, month)).getAsJsonObject();
         JsonElement jsonElement = object.get("data");
-        Type type = new TypeToken<List<CzechCraftVote>>(){}.getType();
-        return gson.fromJson(jsonElement.toString(), type);
+        return gson.fromJson(jsonElement.toString(), getType(VotePage.CZECH_CRAFT));
+    }
+
+    public List<CraftListVote> craftListVotes(String token, int year, int month) {
+        JsonElement element = getElement(String.format("https://api.craftlist.org/v1/%s/votes/%s/%s/", token, year, month));
+        return gson.fromJson(element.toString(), getType(VotePage.CRAFTLIST));
     }
 
     @SneakyThrows
-    public List<CraftListVote> craftListVotes(String token, int year, int month) {
-        URL url = new URL(String.format("https://api.craftlist.org/v1/%s/votes/%s/%s/", token, year, month));
+    private JsonElement getElement(String rawUrl) {
+        URL url = new URL(rawUrl);
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(url.openStream()));
         String json = bufferedReader.readLine().trim();
         JsonParser parser = new JsonParser();
-        JsonElement element = parser.parse(json);
-        Type type = new TypeToken<List<CraftListVote>>(){}.getType();
-        return gson.fromJson(element.toString(), type);
+        return parser.parse(json);
+    }
+
+    private Type getType(VotePage votePage) {
+        switch (votePage) {
+            case CZECH_CRAFT:
+                return new TypeToken<List<CzechCraftVote>>(){}.getType();
+            case CRAFTLIST:
+                return new TypeToken<List<CraftListVote>>(){}.getType();
+        }
+        return null;
     }
 
 }

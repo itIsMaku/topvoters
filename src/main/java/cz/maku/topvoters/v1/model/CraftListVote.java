@@ -12,12 +12,15 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Getter
 @Setter
-public class CraftListVote implements Serializable {
+public class CraftListVote extends Vote {
 
     private String nickname;
     private int score;
     private String ip;
     private int timestamp;
 
-
+    @Override
+    public String getUsername() {
+        return nickname;
+    }
 }
