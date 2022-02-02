@@ -21,15 +21,15 @@ public class MainRestController {
     @Autowired
     private TopVotersService topVotersService;
 
-    @GetMapping("/czech-craft/{identifier}/{month}")
-    public ResponseEntity<Map<String, Integer>> czechCraft(@PathVariable("identifier") String identifier, @PathVariable("month") int month) {
-        List<CzechCraftVote> czechCraftVotes = topVotersService.czechCraftVotes(identifier, 2021, month);
+    @GetMapping("/czech-craft/{identifier}/{month}/{year}")
+    public ResponseEntity<Map<String, Integer>> czechCraft(@PathVariable("identifier") String identifier, @PathVariable("month") int month, @PathVariable("year") int year) {
+        List<CzechCraftVote> czechCraftVotes = topVotersService.czechCraftVotes(identifier, year, month);
         return ResponseEntity.ok(Commons.sortMapByValue(getVotes(czechCraftVotes)));
     }
 
-    @GetMapping("/craftlist/{identifier}/{month}")
-    public ResponseEntity<Map<String, Integer>> craftList(@PathVariable("identifier") String identifier, @PathVariable("month") int month) {
-        List<CraftListVote> craftListVotes = topVotersService.craftListVotes(identifier, 2021, month);
+    @GetMapping("/craftlist/{identifier}/{month}/{year}")
+    public ResponseEntity<Map<String, Integer>> craftList(@PathVariable("identifier") String identifier, @PathVariable("month") int month, @PathVariable("year") int year) {
+        List<CraftListVote> craftListVotes = topVotersService.craftListVotes(identifier, year, month);
         return ResponseEntity.ok(Commons.sortMapByValue(getVotes(craftListVotes)));
     }
 

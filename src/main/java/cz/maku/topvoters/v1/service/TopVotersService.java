@@ -48,9 +48,8 @@ public class TopVotersService {
     private Type getType(VotePage votePage) {
         switch (votePage) {
             case CZECH_CRAFT:
-                return new TypeToken<List<CzechCraftVote>>(){}.getType();
             case CRAFTLIST:
-                return new TypeToken<List<CraftListVote>>(){}.getType();
+                return new TypeToken<List<CzechCraftVote>>(){}.getType();
         }
         return null;
     }

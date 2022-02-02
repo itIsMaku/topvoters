@@ -4,9 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.io.Serializable;
-import java.time.LocalDateTime;
-
 /**
  * https://czech-craft.eu/api/server/SERVER-SLUG/votes/YYYY/MM/
  */
